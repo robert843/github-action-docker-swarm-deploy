@@ -41,9 +41,13 @@ inputs:
   registry-username:
     description: 'The username to use to authenticate with the container registry.'
     required: true
-  registry-token:
-    description: 'The token or password to use to authenticate with the container registry.'
+  registry-password:
+    description: 'The password to use to authenticate with the container registry.'
     required: true
+  registry-token:
+    description: '⚠️ DEPRECATED: Use registry-password instead. The token or password to use to authenticate with the container registry.'
+    required: false
+    deprecationMessage: 'registry-token is deprecated. Please use registry-password instead.'
   log_level:
     description: 'The log level to use for the Docker CLI.'
     default: 'debug'
@@ -182,7 +186,7 @@ runs:
       uses: docker/login-action@v3
       with:
         username: ${{ inputs.registry-username }}
-        password: ${{ inputs.registry-token }}
+        password: ${{ inputs.registry-password || inputs.registry-token }}
         registry: ${{ inputs.registry }}
 
     - name: Load .env file and set variables

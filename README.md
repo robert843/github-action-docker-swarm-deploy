@@ -42,7 +42,7 @@ jobs:
           ssh_remote_hostname: "${{ secrets.SSH_REMOTE_HOSTNAME }}"
           registry: "ghcr.io"
           registry-username: "${{ github.actor }}"
-          registry-token: "${{ secrets.GITHUB_TOKEN }}"
+          registry-password: "${{ secrets.GITHUB_TOKEN }}"
           stack_name: "${{ env.PROJECT_NAME }}"
           md5_file_path: "./.infrastructure/conf/traefik/prod/traefik.yml"
           md5_variable_name: "SPIN_MD5_HASH_TRAEFIK_YML"
@@ -60,8 +60,9 @@ The following inputs are available:
 | md5_file_path           | Set the path to the file you would like to get the MD5 checksum for.                             |                                                      | false    |
 | md5_variable_name       | Set the name of the variable to store the MD5 checksum in.                                       | `MD5_CHECKSUM`                                       | false    |
 | registry                | Comma-separated list of container registries to authenticate with (e.g., "docker.io,ghcr.io").   | `docker.io`                                          | false    |
-| registry-token          | The token or password to use to authenticate with the container registry.                        |                                                      | ⚠️ true  |
+| registry-password       | The password to use to authenticate with the container registry.                                 |                                                      | ⚠️ true  |
 | registry-username       | The username to use to authenticate with the container registry.                                 |                                                      | ⚠️ true  |
+| ~~registry-token~~      | ⚠️ **DEPRECATED:** Use `registry-password` instead.                                              |                                                      | false    |
 | ssh_deploy_private_key  | The private key you have authenticated to connect to your server via SSH.                        |                                                      | ⚠️ true  |
 | ssh_deploy_user         | The user that you would like to connect as on the remote server via SSH.                         | `deploy`                                             | ⚠️ true  |
 | ssh_remote_hostname     | The hostname or IP address of the server you want to connect to.                                 |                                                      | ⚠️ true  |
@@ -121,7 +122,7 @@ To ensure you're validating the identity of your server, you can set the `ssh_re
 ```yml
 - uses: serversideup/github-action-docker-swarm-deploy@v3
   with:
-    registry-token: "${{ secrets.GITHUB_TOKEN }}"
+    registry-password: "${{ secrets.GITHUB_TOKEN }}"
     registry-username: "${{ github.actor }}"
     ssh_deploy_private_key: "${{ secrets.SSH_DEPLOY_PRIVATE_KEY }}"
     ssh_remote_hostname: "${{ secrets.SSH_REMOTE_HOSTNAME }}"
