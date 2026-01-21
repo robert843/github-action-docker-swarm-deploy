@@ -287,7 +287,7 @@ runs:
     
     - name: Run Docker Stack deployment via SSH.
       run: |
-        docker --log-level ${{ env.ACTIONS_STEP_DEBUG == 'true' && 'debug' || inputs.log_level }} -H ssh://${{ inputs.ssh_deploy_user }}@${{ inputs.ssh_remote_hostname }}:${{ inputs.ssh_remote_port }} \
+        DOCKER_API_VERSION=1.41 docker --log-level ${{ env.ACTIONS_STEP_DEBUG == 'true' && 'debug' || inputs.log_level }} -H ssh://${{ inputs.ssh_deploy_user }}@${{ inputs.ssh_remote_hostname }}:${{ inputs.ssh_remote_port }} \
           stack deploy --detach=false --with-registry-auth \
           ${{ inputs.docker_compose_file_path }} \
           ${{ inputs.stack_name }} \
